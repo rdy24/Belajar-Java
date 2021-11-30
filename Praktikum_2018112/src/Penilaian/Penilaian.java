@@ -8,18 +8,32 @@ package Penilaian;
  *
  * @author user11
  */
-public class Penilaian {
-    String NIM,nama,kode_mk;
-    int nilaiTugas, nilaiPrak;
-    private double nilaiAkhirPrak(){
-        return ((nilaiTugas*0.6)+(nilaiPrak*0.4));           
-    }
-    double tampilNA(){
-        return nilaiAkhirPrak();
-    }
-    double nilaiAkhir(){
-        return 0;   
+public abstract class Penilaian {
+    String nama,NIM, kode_mk;
+    private int nilaiTugas, nilaiPrak;
+    double nilaiAkhir;
+
+    public int getNT() {
+        return nilaiTugas;
     }
 
+    public void setNT(int nt) {
+        this.nilaiTugas = nt;
+    }
 
+    public int getNP() {
+        return nilaiPrak;
+    }
+
+    public void setNP(int np) {
+        this.nilaiPrak = np;
+    }
+
+    double nilaiAkhirPrak(){
+        return ((getNT()*0.6)+(getNP()*0.4));
+                
+    }
+    abstract double nilaiAkhir(); 
+         
 }
+

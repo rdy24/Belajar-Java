@@ -149,33 +149,40 @@ public class GUI_Nilai extends javax.swing.JFrame {
     private void btnNAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNAActionPerformed
     // TODO add your handling code here:
     memoNilai.setText("");
-    Penilaian_NonPrak nilai = new Penilaian_NonPrak();
-    nilai.NIM = txtNIM.getText();
-    nilai.nama = txtNama.getText();
-    nilai.kode_mk = txtKodeMK.getText();    
-    nilai.nilaiTugas = Integer.parseInt(txtNT.getText());
-    nilai.nilaiPrak = Integer.parseInt(txtNP.getText());
+  Penilaian nilai; // instansiasi
+  //objek nilai dari super class diinisialisasi dengan sub class
+   nilai = new Penilaian_NonPrak(); 
+       
+   nilai.NIM = txtNIM.getText();
+   nilai.nama = txtNama.getText();
+   nilai.kode_mk = txtKodeMK.getText();    
+   nilai.setNT(Integer.parseInt(txtNT.getText()));
+   nilai.setNP(Integer.parseInt(txtNP.getText()));
+       
+   if (cek_prak.isSelected()){
+          
+     memoNilai.append("Nilai Akhir Mata Kuliah \n");
+     memoNilai.append("--------------------------------------\n");
+     memoNilai.append("NIM                : "+nilai.NIM +"\n");
+     memoNilai.append("Nama               : "+nilai.nama +"\n");
+     memoNilai.append("Kode MK         : "+nilai.kode_mk +"\n");
+     memoNilai.append("Nilai Tugas     : "+nilai.getNT() +"\n");
+     memoNilai.append("Nilai Praktikum : "+nilai.getNP() +"\n");
+     memoNilai.append("--------------------------------------\n");
+     memoNilai.append("Nilai Akhir      : "+nilai.nilaiAkhirPrak());
+      
+   }else {
+     memoNilai.append("Nilai Akhir Mata Kuliah \n");
+     memoNilai.append("--------------------------------------\n");
+     memoNilai.append("NIM              : "+nilai.NIM +"\n");
+     memoNilai.append("Nama               : "+nilai.nama +"\n");
+     memoNilai.append("Kode MK          : "+nilai.kode_mk +"\n");
+     memoNilai.append("Nilai Tugas      : "+nilai.getNT() +"\n");
+     memoNilai.append("--------------------------------------\n");
+     memoNilai.append("Nilai Akhir      : "+nilai.nilaiAkhir());
 
-    if (cek_prak.isSelected()){
-        memoNilai.append("Nilai Akhir Mata Kuliah \n");
-        memoNilai.append("--------------------------------------\n");
-        memoNilai.append("NIM             : "+nilai.NIM +"\n");
-        memoNilai.append("Nama            : "+nilai.nama +"\n");
-        memoNilai.append("Kode MK         : "+nilai.kode_mk +"\n");
-        memoNilai.append("Nilai Tugas     : "+nilai.nilaiTugas +"\n");
-        memoNilai.append("Nilai Praktikum : "+nilai.nilaiPrak +"\n");
-        memoNilai.append("--------------------------------------\n");
-        memoNilai.append("Nilai Akhir     : "+nilai.tampilNA());
-      }else{
-        memoNilai.append("Nilai Akhir Mata Kuliah \n");
-        memoNilai.append("--------------------------------------\n");
-        memoNilai.append("NIM             : "+nilai.NIM +"\n");
-        memoNilai.append("Nama            : "+nilai.nama +"\n");
-        memoNilai.append("Kode MK         : "+nilai.kode_mk +"\n");
-        memoNilai.append("Nilai Tugas     : "+nilai.nilaiTugas +"\n");
-        memoNilai.append("--------------------------------------\n");
-        memoNilai.append("Nilai Akhir     : "+nilai.nilaiAkhir());
-      }
+        }
+
 
     }//GEN-LAST:event_btnNAActionPerformed
 

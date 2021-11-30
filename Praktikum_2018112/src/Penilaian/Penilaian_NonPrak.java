@@ -11,7 +11,7 @@ package Penilaian;
 public class Penilaian_NonPrak extends Penilaian{
     @Override
     double nilaiAkhir(){
-        return (nilaiTugas);
+        return getNT();
     }  
 }
 
