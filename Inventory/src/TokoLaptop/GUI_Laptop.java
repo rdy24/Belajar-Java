@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package TokoLaptop;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -167,11 +168,16 @@ public class GUI_Laptop extends javax.swing.JFrame {
 
     private void btnCetakActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCetakActionPerformed
         // TODO add your handling code here:
-        Laptop_Kosong laptop = new Laptop_Kosong();
-        laptop.namaLaptop = txtNama.getText();
-        laptop.merk = txtMerk.getText();
-        laptop.tahun = txtTahun.getText();
-        laptop.harga = Integer.parseInt(txtHarga.getText());
+        Laptop laptop;
+        laptop = new Laptop_Kosong();
+        try {
+            laptop.namaLaptop = txtNama.getText();
+            laptop.merk = txtMerk.getText();
+            laptop.tahun = txtTahun.getText();
+            laptop.harga = Integer.parseInt(txtHarga.getText());
+        } catch(Exception err){
+            JOptionPane.showMessageDialog(null, "Semua Text Field wjib diisi", "Warning",2);
+        }
         memoTampil.setText("");
         memoTampil.append("Nama Laptop : " + laptop.namaLaptop + "\n");
         memoTampil.append("Merk : " + laptop.merk + "\n");
