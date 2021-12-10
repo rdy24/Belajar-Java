@@ -3,15 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package BAB8.Interface;
+package bab8;
 
 /**
  *
  * @author user11
  */
-public interface kendaraan {
-    String alat_penggerak = "100";
-    abstract String nama();
-    abstract int jumlah_roda();
-    abstract String lintasan();
+public interface penerbit {
+    static final String negara = "Indonesia";
+    abstract void nama_penerbit();
+    abstract void kota();
 }

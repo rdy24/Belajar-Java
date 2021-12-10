@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package BAB8.Interface;
+package bab8;
 
 import javax.swing.JOptionPane;
 
@@ -106,7 +106,7 @@ public class GUI_Interface extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnProsesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProsesActionPerformed
-        // TODO add your handling code here:
+
         if(cmbPilih.getSelectedIndex() == 1) {
             Mobil mobil = new Mobil();
             txtNama.setText(mobil.nama());
