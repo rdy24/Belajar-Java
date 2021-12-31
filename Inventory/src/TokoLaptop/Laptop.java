@@ -9,18 +9,15 @@ package TokoLaptop;
  *
  * @author user11
  */
-public abstract class Laptop {
+public class Laptop {
     public String namaLaptop,merk,tahun;
-    public int harga,diskon;
-    protected String stok;
-    
-    public abstract String stokKosong();
+    public int harga, stok;
 
-    public String getStok() {
-        return "Tersedia " + this.stok + " laptop";
+    public int getStok() {
+        return this.stok;
     }
 
-    public void setStok(String stok) {
+    public void setStok(int stok) {
         this.stok = stok;
     }
 }

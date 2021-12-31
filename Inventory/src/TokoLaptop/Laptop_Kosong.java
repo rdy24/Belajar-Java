@@ -9,9 +9,9 @@ package TokoLaptop;
  *
  * @author user11
  */
-public class Laptop_Kosong extends Laptop{
+public class Laptop_Kosong extends Laptop implements Laptop1{
     @Override
-    public String stokKosong() {
-        return "Kosong";
+    public int stokKosong() {
+        return 0;
     }
 }

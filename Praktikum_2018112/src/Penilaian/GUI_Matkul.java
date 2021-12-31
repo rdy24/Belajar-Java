@@ -4,17 +4,145 @@
  */
 package Penilaian;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
+
 /**
  *
  * @author user11
  */
 public class GUI_Matkul extends javax.swing.JFrame {
+    String kode1,mk1,dosen1;
 
     /**
      * Creates new form GUI_Matkul
      */
     public GUI_Matkul() {
         initComponents();
+        tampil();
+    }
+    public Connection conn;
+
+    public void koneksi() throws SQLException {
+        try {
+            conn = null;
+            Class.forName("com.mysql.jdbc.Driver");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost/oop_2018112?user=root&password=");
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(GUI_Matkul.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException e) {
+            Logger.getLogger(GUI_Matkul.class.getName()).log(Level.SEVERE, null, e);
+        } catch (Exception es) {
+            Logger.getLogger(GUI_Matkul.class.getName()).log(Level.SEVERE, null, es);
+        }
+    }
+
+    public void tampil() {
+        DefaultTableModel tabelhead = new DefaultTableModel();
+        tabelhead.addColumn("KODE MK");
+        tabelhead.addColumn("NAMA MK");
+        tabelhead.addColumn("DOSEN");
+        try {
+            koneksi();
+            String sql = "SELECT * FROM tb_matkul";
+            Statement stat = conn.createStatement();
+            ResultSet res = stat.executeQuery(sql);
+            while (res.next()) {
+                tabelhead.addRow(new Object[]{res.getString(1), res.getString(2), res.getString(3),});
+            }
+            tabel_data.setModel(tabelhead);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "BELUM TERKONEKSI");
+        }
+    }
+
+    public void refresh() {
+        new GUI_Matkul().setVisible(true);
+        this.setVisible(false);
+    }
+
+    public void insert(){
+        String Kode  = txtKodeMK.getText();
+        String MK    = txtMK.getText();
+        String Dosen = txtDosen.getText();
+        try {
+        koneksi();
+            Statement statement = conn.createStatement();
+            statement.executeUpdate("INSERT INTO tb_matkul(kode_mk, nama_mk, dosen)" 
+                                    +"VALUES('"+Kode+"','"+MK+"','"+Dosen+"')");
+            statement.close();
+            JOptionPane.showMessageDialog(null, "Berhasil Memasukan Data Matakuliah!");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Terjadi Kesalahan Input!");
+        }
+        refresh();
+    }
+
+
+    public void update() {
+        String Kode = txtKodeMK.getText();
+        String MK = txtMK.getText();
+        String Dosen = txtDosen.getText();
+        try {
+            Statement statement = conn.createStatement();
+            statement.executeUpdate("UPDATE tb_matkul SET kode_mk='" + Kode + "'," + "nama_mk='" + MK + "'"
+                    + ",dosen='" + Dosen + "'WHERE kode_mk = '" + Kode + "'");
+            statement.close();
+            conn.close();
+            JOptionPane.showMessageDialog(null, "Update Data MataKuliah!");
+        } catch (Exception e) {
+            System.out.println("Error : " + e);
+        }
+        refresh();
+    }
+
+    public void delete() {
+        int ok = JOptionPane.showConfirmDialog(null, "Apakah Anda yakin akan menghapus data ?", "Konfirmasi", JOptionPane.YES_NO_OPTION);
+        if (ok == 0) {
+            try {
+                String sql = "DELETE FROM tb_matkul WHERE kode_mk='" + txtKodeMK.getText() + "'";
+                java.sql.PreparedStatement stmt = conn.prepareStatement(sql);
+                stmt.executeUpdate();
+                JOptionPane.showMessageDialog(null, "Data Berhasil di hapus");
+                batal();
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "Data gagal di hapus");
+            }
+        }
+        refresh();
+    }
+
+    public void cari() {
+        try {
+            try (Statement statement = conn.createStatement()) {
+                String sql = "SELECT * FROM tb_matkul WHERE `kode_mk`  LIKE '%" + txtCari.getText() + "%'";
+                ResultSet rs = statement.executeQuery(sql); //menampilkan data dari sql query
+                if (rs.next()) // .next() = scanner method
+                {
+                    txtKodeMK.setText(rs.getString(1));
+                    txtMK.setText(rs.getString(2));
+                    txtDosen.setText(rs.getString(3));
+                } else {
+                    JOptionPane.showMessageDialog(null, "Data yang Anda cari tidak ada");
+                }
+            }
+        } catch (Exception ex) {
+            System.out.println("Error." + ex);
+        }
+    }
+
+    public void itempilih() {
+        txtKodeMK.setText(kode1);
+        txtMK.setText(mk1);
+        txtDosen.setText(dosen1);
     }
 
     public void batal() {
@@ -80,13 +208,33 @@ public class GUI_Matkul extends javax.swing.JFrame {
                 "Kode MK", "Matkul", "Dosen Pengajar"
             }
         ));
+        tabel_data.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tabel_dataMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(tabel_data);
 
         btnCari.setText("Cari");
+        btnCari.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCariActionPerformed(evt);
+            }
+        });
 
         btnUbah.setText("Ubah");
+        btnUbah.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUbahActionPerformed(evt);
+            }
+        });
 
         btnHapus.setText("Hapus");
+        btnHapus.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHapusActionPerformed(evt);
+            }
+        });
 
         btnBatal.setText("Batal");
         btnBatal.addActionListener(new java.awt.event.ActionListener() {
@@ -96,6 +244,11 @@ public class GUI_Matkul extends javax.swing.JFrame {
         });
 
         btnNilai.setText("Form Nilai");
+        btnNilai.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNilaiActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -190,7 +343,39 @@ public class GUI_Matkul extends javax.swing.JFrame {
 
     private void btnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSimpanActionPerformed
         // TODO add your handling code here:
+        insert();
     }//GEN-LAST:event_btnSimpanActionPerformed
+
+    private void btnUbahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUbahActionPerformed
+        // TODO add your handling code here:
+        update();
+    }//GEN-LAST:event_btnUbahActionPerformed
+
+    private void btnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusActionPerformed
+        // TODO add your handling code here:
+        delete();
+    }//GEN-LAST:event_btnHapusActionPerformed
+
+    private void btnCariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCariActionPerformed
+        // TODO add your handling code here:
+        cari();
+    }//GEN-LAST:event_btnCariActionPerformed
+
+    private void tabel_dataMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabel_dataMouseClicked
+        // TODO add your handling code here:
+        int tabel = tabel_data.getSelectedRow();
+        kode1 = tabel_data.getValueAt(tabel, 0).toString();
+        mk1 = tabel_data.getValueAt(tabel, 1).toString();
+        dosen1 = tabel_data.getValueAt(tabel, 2).toString();
+        itempilih();
+
+    }//GEN-LAST:event_tabel_dataMouseClicked
+
+    private void btnNilaiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNilaiActionPerformed
+        // TODO add your handling code here:
+        new GUI_Nilai().setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_btnNilaiActionPerformed
 
     /**
      * @param args the command line arguments

@@ -9,29 +9,15 @@ package Penilaian;
  * @author user11
  */
 public abstract class Penilaian {
-    String nama,NIM, kode_mk;
-    private int nilaiTugas, nilaiPrak;
-    double nilaiAkhir;
+    String NIM, kode_mk;
+    int nilaiTugas, nilaiPrak;
 
-    public int getNT() {
-        return nilaiTugas;
+    private double nilaiAkhirPrak(){
+        return ((nilaiTugas*0.6)+(nilaiPrak*0.4));
     }
 
-    public void setNT(int nt) {
-        this.nilaiTugas = nt;
-    }
-
-    public int getNP() {
-        return nilaiPrak;
-    }
-
-    public void setNP(int np) {
-        this.nilaiPrak = np;
-    }
-
-    double nilaiAkhirPrak(){
-        return ((getNT()*0.6)+(getNP()*0.4));
-                
+    double tampilNA(){
+        return nilaiAkhirPrak();
     }
     abstract double nilaiAkhir(); 
          
